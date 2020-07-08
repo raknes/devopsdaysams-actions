@@ -26,3 +26,9 @@ jobs:
       - uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Create Azure Container Instance
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.8.0
+          inlineScript: |
+            az container create --resource-group raknes --name devopsdaysams --environment-variables BASE_URL=https://raknes-devopsdaysams.azurewebsites.net/api/AddToWall --image raknes.azurecr.io/devopsdaysams --dns-name-label raknes-devopsdaysams --ports 80
