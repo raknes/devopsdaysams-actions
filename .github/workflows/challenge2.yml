@@ -16,7 +16,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: raknes.azurecr.io
+          registry: ${{ secrets.DOCKER_LOGIN_SERVER }}
           repository: devopsdaysams
           tags: ${{ github.sha }}
   deploy:
@@ -29,16 +29,17 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - uses: azure/docker-login@v1
         with:
-          login-server: raknes.azurecr.io
+          login-server: ${{ secrets.DOCKER_LOGIN_SERVER }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: 'azure/aci-deploy@v1'
         with:
-          resource-group: raknes
-          dns-name-label: raknes-devopsdaysams
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
           image: raknes.azurecr.io/devopsdaysams:${{ github.sha }}
           environment-variables: BASE_URL=https://devopsdaysams.azurewebsites.net/api/AddToWall
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          registry-login-server: ${{ secrets.DOCKER_LOGIN_SERVER }}
+          registry-username: ${{ secrets.DOCKER_USERNAME }}
+          registry-password: ${{ secrets.DOCKER_PASSWORD }}
           name: devopsdaysams-container
           location: 'west europe'
