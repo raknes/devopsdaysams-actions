@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           registry: raknes.azurecr.io
           repository: devopsdaysams
-          tags: latest
+          tags: :${{ github.sha }}
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -26,9 +26,14 @@ jobs:
       - uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Create Azure Container Instance
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.8.0
-          inlineScript: |
-            az container create --resource-group raknes --name devopsdaysams --environment-variables BASE_URL=https://raknes-devopsdaysams.azurewebsites.net/api/AddToWall --image raknes.azurecr.io/devopsdaysams --dns-name-label raknes-devopsdaysams --ports 80
+      - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: raknes
+            dns-name-label: raknes-devopsdaysams
+            image: raknes.azurecr.io/devopsdaysams:${{ github.sha }}
+            environment-variables: BASE_URL=https://devopsdaysams.azurewebsites.net/api/AddToWall
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: devopsdaysams-container
+            location: 'west europe'
