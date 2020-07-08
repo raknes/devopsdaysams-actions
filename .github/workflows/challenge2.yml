@@ -1,4 +1,4 @@
-name: Challenge 1
+name: Challenge 2
 # This workflow is triggered on pushes to the repository.
 on: 
   push:
