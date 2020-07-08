@@ -3,7 +3,7 @@ name: Challenge 1
 on: 
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
