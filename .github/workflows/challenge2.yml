@@ -26,14 +26,13 @@ jobs:
       - uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
-          with:
-            resource-group: raknes
-            dns-name-label: raknes-devopsdaysams
-            image: raknes.azurecr.io/devopsdaysams:${{ github.sha }}
-            environment-variables: BASE_URL=https://devopsdaysams.azurewebsites.net/api/AddToWall
-            registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: devopsdaysams-container
-            location: 'west europe'
+      - uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: raknes
+          dns-name-label: raknes-devopsdaysams
+          image: raknes.azurecr.io/devopsdaysams:${{ github.sha }}
+          environment-variables: BASE_URL=https://devopsdaysams.azurewebsites.net/api/AddToWall
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: devopsdaysams-container
+          location: 'west europe'
