@@ -33,6 +33,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: 'azure/aci-deploy@v1'
+        id: acideploy
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
@@ -43,3 +44,5 @@ jobs:
           registry-password: ${{ secrets.DOCKER_PASSWORD }}
           name: devopsdaysams-container
           location: 'west europe'
+      - name: Write full app URL
+        run: echo 'The app URL is ${{ steps.acideploy.outputs.app-url }}.'
