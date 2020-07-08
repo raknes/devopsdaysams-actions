@@ -20,12 +20,18 @@ jobs:
           repository: devopsdaysams
           tags: ${{ github.sha }}
   deploy:
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/docker-login@v1
+          with:
+            login-server: raknes.azurecr.io
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: 'azure/aci-deploy@v1'
         with:
           resource-group: raknes
