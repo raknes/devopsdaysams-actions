@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           registry: raknes.azurecr.io
           repository: devopsdaysams
-          tags: :${{ github.sha }}
+          tags: ${{ github.sha }}
   deploy:
     needs: build
     runs-on: ubuntu-latest
